@@ -28,9 +28,14 @@ describe DockingStation do
     expect{station.release_bike}.to raise_error("No bikes in storage")
   end
 
-  it "when you try to add a bike to the storage when it has 20 in it returns an error" do
+  it "when you try to add a bike to the storage when it has maximum in it returns an error" do
     station = DockingStation.new
-    20.times { station.dock(Bike.new) }
+    station.capacity.times { station.dock(Bike.new) }
+    expect { station.dock(Bike.new) }.to raise_error('Bike storage is full')
+  end
+  it "when you try to add a bike to the storage when it has maximum with a different capacity in it returns an error" do
+    station = DockingStation.new(50)
+    station.capacity.times { station.dock(Bike.new) }
     expect { station.dock(Bike.new) }.to raise_error('Bike storage is full')
   end
 end
